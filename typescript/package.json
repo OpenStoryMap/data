@@ -1,0 +1,20 @@
+{
+  "name": "openstorymap-data",
+  "version": "1.0.0",
+  "description": "Shapefile creation scripts",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@turf/turf": "^6.5.0",
+    "@types/unzipper": "^0.10.5",
+    "axios": "^0.26.0",
+    "shp2json": "github:njason/shp2json",
+    "ts-node": "^10.6.0",
+    "typescript": "^4.6.2",
+    "unzipper": "^0.10.11"
+  }
+}
