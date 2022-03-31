@@ -1,9 +1,9 @@
-import { createWriteStream, createReadStream, rmSync, writeFileSync } from 'fs';
+import { createWriteStream, createReadStream, rmSync } from 'fs';
 import * as stream from 'stream';
 import { promisify } from 'util';
 
 import axios from 'axios';
-import unzipper from 'unzipper';
+import { Extract } from 'unzipper';
 
 
 const finished = promisify(stream.finished);
@@ -18,7 +18,7 @@ export async function downloadAndExtract(url: string, outputDir: string): Promis
   try {
     await new Promise((resolve: Function) => {
       createReadStream(tempZipFileName)
-        .pipe(unzipper.Extract({path: outputDir}))
+        .pipe(Extract({path: outputDir}))
         .on('close', () => resolve('close'));
     });
   } finally {

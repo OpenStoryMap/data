@@ -18,16 +18,12 @@ export default async function findMaxHeatIndexes(censusFilename: string, travers
 
     const tract = findTract(traversePointFeature, censusTracts);
 
-    // @ts-ignore
-    const heatIndex = traversePointFeature.properties['hi_f'];
-    // @ts-ignore
-    const geoId = tract.properties['GEOID'];
+    const heatIndex = traversePointFeature.properties!['hi_f'];
+    const geoId = tract.properties!['GEOID'];
 
     if (traversedTracts.get(geoId)) {
-      // @ts-ignore
-      if (heatIndex > traversedTracts.get(geoId).maxHeatIndex) {
-        // @ts-ignore
-        traversedTracts.get(geoId).maxHeatIndex = heatIndex;
+      if (heatIndex > traversedTracts.get(geoId)!.maxHeatIndex) {
+        traversedTracts.get(geoId)!.maxHeatIndex = heatIndex;
       }
     } else {
       traversedTracts.set(geoId, {
@@ -38,9 +34,8 @@ export default async function findMaxHeatIndexes(censusFilename: string, travers
   });
 
   const traversedTractFeatures = new Array<Feature>();
-  for (const tract of traversedTracts.values()) {
-    // @ts-ignore
-    tract.feature.properties.maxHeatIndex = tract.maxHeatIndex;
+  for (const tract of Array.from(traversedTracts.values())) {
+    tract.feature.properties!.maxHeatIndex = tract.maxHeatIndex;
 
     traversedTractFeatures.push(tract.feature);
   }
