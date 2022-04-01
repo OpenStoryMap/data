@@ -47,13 +47,3 @@ function createQueryConfig(
 
   return queryConfig;
 }
-
-function findTract(respone: Array<any>, tractId: string): any {
-  for(const item of respone) {
-    if (item['tract'] === tractId) {
-      return item;
-    }
-  }
-
-  throw Error(`Could not find tract ${tractId}`);
-}

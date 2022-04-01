@@ -1,14 +1,14 @@
 import * as fs from 'fs';
+import { FeatureCollection } from '@turf/turf';
 
 import { downloadAndExtract } from '../download';
 import { runCensusTractDataQuery } from '../census';
 import findMaxHeatIndexes from './find-max-heat-indexes';
 import addDemographics from './add-demographics';
-import { FeatureCollection } from '@turf/turf';
 
 
 async function main(): Promise<void> {
-  const baseExportPath = 'export/nyc-heat-watch-2021';
+  const baseExportPath = '../geodata/nyc-heat-watch-2021';
 
   const nycRasterZipUrl = 'https://files.osf.io/v1/resources/j6eqr/providers/osfstorage/61856f082b61750162f4725f?action=download&direct&version=1';
   const nycTraverseZipUrl = 'https://files.osf.io/v1/resources/j6eqr/providers/osfstorage/61d5e591b0ea71120cb2a84f?action=download&direct&version=1';
@@ -48,10 +48,10 @@ async function main(): Promise<void> {
   const totalPopulationFips = 'B02001_001E';
   const blackAloneFips = 'B02001_003E';
 
-  const nyDemographic = await runCensusTractDataQuery(nyStateFips, [nyCountyFips, bronxCountyFips] , [totalPopulationFips, blackAloneFips]);
-  const njDemographic = await runCensusTractDataQuery(njStateFips, [hudsonCountyFips, essexCountyFips, unionCountyFips] , [totalPopulationFips, blackAloneFips]);
+  const nyDemographics = await runCensusTractDataQuery(nyStateFips, [nyCountyFips, bronxCountyFips] , [totalPopulationFips, blackAloneFips]);
+  const njDemographics = await runCensusTractDataQuery(njStateFips, [hudsonCountyFips, essexCountyFips, unionCountyFips] , [totalPopulationFips, blackAloneFips]);
   
-  const maxHeatAndDemographics = addDemographics(heatIndexFeatureCollection, nyDemographic.concat(njDemographic));
+  const maxHeatAndDemographics = addDemographics(heatIndexFeatureCollection, nyDemographics.concat(njDemographics));
 
   fs.writeFileSync(`${baseExportPath}/heatAndDemographics.geojson`, JSON.stringify(maxHeatAndDemographics));
 }

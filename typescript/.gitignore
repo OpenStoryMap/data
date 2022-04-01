@@ -104,5 +104,4 @@ dist
 .tern-port
 
 # codebase
-/export/
 config.json
