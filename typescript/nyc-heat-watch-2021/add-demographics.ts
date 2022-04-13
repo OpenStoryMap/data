@@ -1,12 +1,13 @@
-import { FeatureCollection } from "@turf/turf";
+import { FeatureCollection } from '@turf/turf';
 
-export default function addDemographics(dataSet: FeatureCollection, demographics: Array<any>): FeatureCollection {
+import * as constants from './constants';
+
+export function addNonWhitePercentage(dataSet: FeatureCollection, demographics: Array<any>): FeatureCollection {
   for(const feature of dataSet.features) {
     for(const demographicsInfo of demographics) {
-      // @ts-ignore
-      if (feature.properties['TRACTCE'] === demographicsInfo['tract']) {
-        // @ts-ignore
-        feature.properties['peopleOfColor'] = demographicsInfo['B02001_003E'] / demographicsInfo['B02001_001E'];
+      if (feature.properties!['TRACTCE'] === demographicsInfo!['tract']) {
+        const nonWhitePopulation = constants.nonWhiteFips.reduce((sum: number, fips: string) => sum + demographicsInfo![fips], 0);
+        feature.properties!['nonWhitePercentage'] = nonWhitePopulation / demographicsInfo![constants.totalPopulationFips];
       }
     }
   }
