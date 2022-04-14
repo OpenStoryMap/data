@@ -7,7 +7,7 @@ export function addNonWhitePercentage(dataSet: FeatureCollection, demographics: 
     for(const demographicsInfo of demographics) {
       if (feature.properties!['TRACTCE'] === demographicsInfo!['tract']) {
         const nonWhitePopulation = constants.nonWhiteFips.reduce((sum: number, fips: string) => sum + demographicsInfo![fips], 0);
-        feature.properties!['nonWhitePercentage'] = nonWhitePopulation / demographicsInfo![constants.totalPopulationFips];
+        feature.properties!['nonWhitePercentage'] = Math.round((nonWhitePopulation / demographicsInfo![constants.totalPopulationFips]) * 100) / 100;
       }
     }
   }
