@@ -8,6 +8,12 @@ export const njRasterZipUrl = 'https://files.osf.io/v1/resources/6rwbg/providers
 export const njTraverseZipUrl = 'https://files.osf.io/v1/resources/6rwbg/providers/osfstorage/61671c7186713b026e8ffa00?action=download&direct&version=1';
 export const njCensusTractZipUrl = 'https://www2.census.gov/geo/tiger/GENZ2018/shp/cb_2018_34_tract_500k.zip';
 
+export const manhattanRedlineUrl = 'https://dsl.richmond.edu/panorama/redlining/static/downloads/geojson/NYManhattan1937.geojson';
+export const bronxRedlineUrl = 'https://dsl.richmond.edu/panorama/redlining/static/downloads/geojson/NYBronx1938.geojson';
+export const hudsonCountyRedlineUrl = 'https://dsl.richmond.edu/panorama/redlining/static/downloads/geojson/NJHudsonCo1939.geojson';
+export const essexCountyRedlineUrl = 'https://dsl.richmond.edu/panorama/redlining/static/downloads/geojson/NJEssexCo1939.geojson';
+export const unionCountyRedlineUrl = 'https://dsl.richmond.edu/panorama/redlining/static/downloads/geojson/NJUnionCo1939.geojson';
+
 export const nyStateFips = '36';
 export const nyCountyFips = '061';
 export const bronxCountyFips = '005';
