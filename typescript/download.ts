@@ -1,4 +1,5 @@
-import { createWriteStream, createReadStream, rmSync } from 'fs';
+import fs from 'fs';
+import path from 'path';
 import * as stream from 'stream';
 import { promisify } from 'util';
 
@@ -9,7 +10,7 @@ import { Extract } from 'unzipper';
 const finished = promisify(stream.finished);
 
 export async function downloadAndExtract(url: string, outputDir: string): Promise<void> {
-  rmSync(outputDir, { recursive: true, force: true });
+  fs.rmSync(outputDir, { recursive: true, force: true });
 
   const tempZipFileName = `tempfile-${+new Date()}.zip`;
 
@@ -17,17 +18,19 @@ export async function downloadAndExtract(url: string, outputDir: string): Promis
 
   try {
     await new Promise((resolve: Function) => {
-      createReadStream(tempZipFileName)
+      fs.createReadStream(tempZipFileName)
         .pipe(Extract({path: outputDir}))
         .on('close', () => resolve('close'));
     });
   } finally {
-    rmSync(tempZipFileName, { force: true });
+    fs.rmSync(tempZipFileName, { force: true });
   }
 }
 
-async function downloadFile(fileUrl: string, outputLocationPath: string): Promise<void> {
-  const writer = createWriteStream(outputLocationPath);
+export async function downloadFile(fileUrl: string, outputLocationPath: string): Promise<void> {
+  ensureDirExists(outputLocationPath);
+  
+  const writer = fs.createWriteStream(outputLocationPath);
 
   await axios({
     method: 'GET',
@@ -38,4 +41,12 @@ async function downloadFile(fileUrl: string, outputLocationPath: string): Promis
     response.data.pipe(writer);
     return finished(writer);
   });
+}
+
+function ensureDirExists(filePath: string): void {
+  const dir = path.dirname(filePath);
+
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir, { recursive: true });
+  }
 }
