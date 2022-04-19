@@ -14,6 +14,10 @@ export const hudsonCountyRedlineUrl = 'https://dsl.richmond.edu/panorama/redlini
 export const essexCountyRedlineUrl = 'https://dsl.richmond.edu/panorama/redlining/static/downloads/geojson/NJEssexCo1939.geojson';
 export const unionCountyRedlineUrl = 'https://dsl.richmond.edu/panorama/redlining/static/downloads/geojson/NJUnionCo1939.geojson';
 
+export const nycGreenspaceUrl = 'https://data.cityofnewyork.us/api/geospatial/mwfu-376i?method=export&format=GeoJSON';
+export const jerseyCityGreenspaceUrl = 'https://data.jerseycitynj.gov/explore/dataset/jersey-city-parks-map/download/?format=geojson&timezone=America/New_York&lang=en';
+export const newarkGreenspaceUrl = 'https://data.ci.newark.nj.us/dataset/540221e5-1716-4115-a058-892943190611/resource/d9f28e90-7935-4f84-97a5-51549fa6af44/download/newarkparks.shp.zip';
+
 export const nyStateFips = '36';
 export const nyCountyFips = '061';
 export const bronxCountyFips = '005';
@@ -32,3 +36,8 @@ export const nonWhiteFips = [
   'B02001_007E',  // Some other race alone
   'B02001_008E',  // Two or more races
 ];
+
+export const medianHouseholdIncomeFips = 'B19013_001E';
+
+export const capaNull = -9999;
+export const censusNull = -666666666;

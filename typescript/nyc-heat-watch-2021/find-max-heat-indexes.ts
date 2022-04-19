@@ -1,14 +1,11 @@
-const toJSON = require('shp2json');
 import { intersect, MultiPolygon, polygon, Polygon, FeatureCollection, Point, Feature } from '@turf/turf';
+import { capaNull } from './constants';
 
 type CensusTract = Polygon | MultiPolygon;
 
 let counter = 0;
 
-export default async function findMaxHeatIndexes(censusFilename: string, traversesFilename: string): Promise<Array<Feature>> {
-
-  const censusTracts = await parseGeoJsonFromShapeFile(censusFilename);
-  const traversePointFeatures = await parseGeoJsonFromShapeFile(traversesFilename);
+export default async function findMaxHeatIndexes(censusTracts: FeatureCollection, traversePointFeatures: FeatureCollection): Promise<Array<Feature>> {
 
   const traversedTracts = new Map<string, {feature: Feature, maxHeatIndex: number}>();
 
@@ -21,15 +18,17 @@ export default async function findMaxHeatIndexes(censusFilename: string, travers
     const heatIndex = traversePointFeature.properties!['hi_f'];
     const geoId = tract.properties!['GEOID'];
 
-    if (traversedTracts.get(geoId)) {
-      if (heatIndex > traversedTracts.get(geoId)!.maxHeatIndex) {
-        traversedTracts.get(geoId)!.maxHeatIndex = heatIndex;
+    if(heatIndex != capaNull) {
+      if (traversedTracts.get(geoId)) {
+        if (heatIndex > traversedTracts.get(geoId)!.maxHeatIndex) {
+          traversedTracts.get(geoId)!.maxHeatIndex = heatIndex;
+        }
+      } else {
+        traversedTracts.set(geoId, {
+          feature: tract,
+          maxHeatIndex: heatIndex
+        });
       }
-    } else {
-      traversedTracts.set(geoId, {
-        feature: tract,
-        maxHeatIndex: heatIndex
-      });
     }
   });
 
@@ -53,28 +52,6 @@ function findTract(traversePointFeature: Feature, censusTracts: FeatureCollectio
   }
 
   throw new Error('cannot find tract');
-}
-
-async function parseGeoJsonFromShapeFile(shapeFilename: string): Promise<FeatureCollection> {
-  const geoJsonString = await streamToString(toJSON.fromShpFile(shapeFilename));
-
-  return JSON.parse(geoJsonString);
-}
-
-/**
- * https://stackoverflow.com/a/49428486/1981635
- * 
- * @param stream 
- * @returns 
- */
-async function streamToString(stream: NodeJS.ReadableStream): Promise<string> {
-  const chunks: Array<Uint8Array> = [];
-
-  return new Promise((resolve, reject) => {
-    stream.on('data', chunk => chunks.push(Buffer.from(chunk)));
-    stream.on('error', err => reject(err));
-    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-  });
 }
 
 const pointSpacer = .00000001;
