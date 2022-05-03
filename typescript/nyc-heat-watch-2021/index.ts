@@ -59,6 +59,8 @@ async function main(): Promise<void> {
 
   fs.writeFileSync(`${constants.baseExportPath}/heatAndDemographics.geojson`, JSON.stringify(maxHeatAndDemographics));
 
+  //const maxHeatAndDemographics = JSON.parse(fs.readFileSync(`${constants.baseExportPath}/heatAndDemographics.geojson`).toString());
+
 
   const manhattanRedline = filterRedline(maxHeatAndDemographics, geoJsonFromFile(`${constants.baseExportPath}/redline/manhattan.geojson`));
   const bronxRedline = filterRedline(maxHeatAndDemographics, geoJsonFromFile(`${constants.baseExportPath}/redline/bronx.geojson`));
@@ -83,7 +85,7 @@ async function main(): Promise<void> {
     features: nycGreenspace.concat(jerseyCityGreenspace.features).concat(newarkGreenspace.features)
   }
 
-  fs.writeFileSync(`${constants.baseExportPath}/overlappedGreenspace.geojson`, JSON.stringify(overlappedGreenspace));*/
+  fs.writeFileSync(`${constants.baseExportPath}/overlappedGreenspace.geojson`, JSON.stringify(overlappedGreenspace));
 }
 
 
