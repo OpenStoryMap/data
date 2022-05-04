@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { downloadFile, downloadAndExtract } from '../download';
 import { runCensusTractDataQuery } from '../census';
 import { geoJsonFromFile, parseGeoJsonFromShapeFile } from '../loaders';
-import findMaxHeatIndexes from './find-max-heat-indexes';
+import { findMaxHeatIndexes, mergeHeatIndexData } from './heat-index';
 import addDemographics from './add-demographics';
 import filterRedline from './filter-redline';
 import * as constants from './constants';
@@ -32,12 +32,29 @@ async function main(): Promise<void> {
   ]);
 
   const nycCensusTracts = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/census-tracts/ny/cb_2018_36_tract_500k.shp`);
-  const nycTraversePointFeatures = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/traverses/nyc/af_trav.shp`);
-  const njCensusTracts = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/census-tracts/nj/cb_2018_34_tract_500k.shp`);
-  const njTraversePointFeatures = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/traverses/nj/af_trav.shp`);
 
-  const nycHeatIndexes = await findMaxHeatIndexes(nycCensusTracts, nycTraversePointFeatures);
-  const njHeatIndexes = await findMaxHeatIndexes(njCensusTracts, njTraversePointFeatures);
+  const nycMorningTraversePointFeatures = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/traverses/nyc/am_trav (2021_12_08 04_38_32 UTC).shp`);
+  const nycAfternoonTraversePointFeatures = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/traverses/nyc/af_trav.shp`);
+  const nycEveningTraversePointFeatures = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/traverses/nyc/pm_trav (2021_12_08 04_38_32 UTC).shp`);
+
+  const nycMorningHeatIndexes = await findMaxHeatIndexes(nycCensusTracts, nycMorningTraversePointFeatures, 'morning');
+  const nycAfternoonHeatIndexes = await findMaxHeatIndexes(nycCensusTracts, nycAfternoonTraversePointFeatures, 'afternoon');
+  const nycEveningHeatIndexes = await findMaxHeatIndexes(nycCensusTracts, nycEveningTraversePointFeatures, 'evening');
+
+  const nycHeatIndexes = mergeHeatIndexData(nycMorningHeatIndexes, nycAfternoonHeatIndexes, nycEveningHeatIndexes);
+
+
+  const njCensusTracts = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/census-tracts/nj/cb_2018_34_tract_500k.shp`);
+
+  const njMorningTraversePointFeatures = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/traverses/nj/am_trav.shp`);
+  const njAfternoonTraversePointFeatures = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/traverses/nj/af_trav.shp`);
+  const njEveningTraversePointFeatures = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/traverses/nj/pm_trav.shp`);
+
+  const njMorningHeatIndexes = await findMaxHeatIndexes(njCensusTracts, njMorningTraversePointFeatures, 'morning');
+  const njAfternoonHeatIndexes = await findMaxHeatIndexes(njCensusTracts, njAfternoonTraversePointFeatures, 'afternoon');
+  const njEveningHeatIndexes = await findMaxHeatIndexes(njCensusTracts, njEveningTraversePointFeatures, 'evening');
+
+  const njHeatIndexes = mergeHeatIndexData(njMorningHeatIndexes, njAfternoonHeatIndexes, njEveningHeatIndexes);
 
   const heatIndexFeatureCollection: FeatureCollection = {
     type: 'FeatureCollection',
