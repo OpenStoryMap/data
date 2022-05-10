@@ -1,5 +1,5 @@
 import { intersect, MultiPolygon, polygon, Polygon, FeatureCollection, Point, Feature } from '@turf/turf';
-import { capaNull } from './constants';
+import { capaTraverseNull } from './constants';
 
 type CensusTract = Polygon | MultiPolygon;
 
@@ -20,7 +20,7 @@ export async function findMaxHeatIndexes(censusTracts: FeatureCollection, traver
     const heatIndex = traversePointFeature.properties!['hi_f'];
     const geoId = tract.properties!['GEOID'];
 
-    if(heatIndex != capaNull) {
+    if(heatIndex != capaTraverseNull) {
       if (traversedTracts[geoId]) {
         if (heatIndex > traversedTracts[geoId][heatIndexPropertyName]) {
           traversedTracts[geoId][heatIndexPropertyName] = heatIndex;

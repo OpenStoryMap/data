@@ -4,7 +4,7 @@ Sample geodata generators scripts written in both python and typescript
 
 To find codes for demographic information such as race and income:
 
-[American Community Servey 5-year data variables](https://api.census.gov/data/2020/acs/acs5/variables.html) **Warning!** 18MB HTML file
+[American Community Servey 5-year data variables](https://api.census.gov/data/2020/acs/acs5/variables.html) **Warning!** 10MB HTML file, Chrome can barely handle it
 
 ## FIPS codes
  - [state](https://www.census.gov/library/reference/code-lists/ansi.html#state)

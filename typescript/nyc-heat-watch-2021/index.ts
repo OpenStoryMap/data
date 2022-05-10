@@ -13,7 +13,7 @@ import { FeatureCollection } from '@turf/turf';
 
 
 async function main(): Promise<void> {
-  await Promise.all([
+  /*await Promise.all([
     downloadAndExtract(constants.nycRasterZipUrl, `${constants.baseExportPath}/rasters/nyc`),
     downloadAndExtract(constants.nycTraverseZipUrl, `${constants.baseExportPath}/traverses/nyc`),
     downloadAndExtract(constants.nyCensusTractZipUrl, `${constants.baseExportPath}/census-tracts/ny`),
@@ -59,18 +59,28 @@ async function main(): Promise<void> {
   const heatIndexFeatureCollection: FeatureCollection = {
     type: 'FeatureCollection',
     features: nycHeatIndexes.concat(njHeatIndexes)
-  }
+  }*/
+
+  const heatIndexFeatureCollection = JSON.parse(fs.readFileSync(`${constants.baseExportPath}/foo.geojson`).toString());
   
 
   const nyDemographics = await runCensusTractDataQuery(
     constants.nyStateFips,
     [constants.nyCountyFips, constants.bronxCountyFips],
-    constants.nonWhiteFips.concat([constants.totalPopulationFips, constants.medianHouseholdIncomeFips]));
+    constants.nonWhite.concat([
+      constants.totalPopulation, constants.medianHouseholdIncome, constants.black,
+      constants.educationTotal, constants.lessThanHighSchool, constants.highSchool,
+      constants.someCollege, constants.bachelors, constants.graduate
+    ]));
 
   const njDemographics = await runCensusTractDataQuery(
     constants.njStateFips,
     [constants.hudsonCountyFips, constants.essexCountyFips, constants.unionCountyFips],
-    constants.nonWhiteFips.concat([constants.totalPopulationFips, constants.medianHouseholdIncomeFips]));
+    constants.nonWhite.concat([
+      constants.totalPopulation, constants.medianHouseholdIncome, constants.black,
+      constants.educationTotal, constants.lessThanHighSchool, constants.highSchool,
+      constants.someCollege, constants.bachelors, constants.graduate
+    ]));
   
   const maxHeatAndDemographics = addDemographics(heatIndexFeatureCollection, nyDemographics.concat(njDemographics));
 
@@ -79,7 +89,7 @@ async function main(): Promise<void> {
   //const maxHeatAndDemographics = JSON.parse(fs.readFileSync(`${constants.baseExportPath}/heatAndDemographics.geojson`).toString());
 
 
-  const manhattanRedline = filterRedline(maxHeatAndDemographics, geoJsonFromFile(`${constants.baseExportPath}/redline/manhattan.geojson`));
+  /*const manhattanRedline = filterRedline(maxHeatAndDemographics, geoJsonFromFile(`${constants.baseExportPath}/redline/manhattan.geojson`));
   const bronxRedline = filterRedline(maxHeatAndDemographics, geoJsonFromFile(`${constants.baseExportPath}/redline/bronx.geojson`));
   const hudsonCountyRedline = filterRedline(maxHeatAndDemographics, geoJsonFromFile(`${constants.baseExportPath}/redline/hudson-county.geojson`));
   const essexCountyRedline = filterRedline(maxHeatAndDemographics, geoJsonFromFile(`${constants.baseExportPath}/redline/essex-county.geojson`));
@@ -102,7 +112,7 @@ async function main(): Promise<void> {
     features: nycGreenspace.concat(jerseyCityGreenspace.features).concat(newarkGreenspace.features)
   }
 
-  fs.writeFileSync(`${constants.baseExportPath}/overlappedGreenspace.geojson`, JSON.stringify(overlappedGreenspace));
+  fs.writeFileSync(`${constants.baseExportPath}/overlappedGreenspace.geojson`, JSON.stringify(overlappedGreenspace));*/
 }
 
 

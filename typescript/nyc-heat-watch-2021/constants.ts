@@ -27,8 +27,12 @@ export const hudsonCountyFips = '017';
 export const essexCountyFips = '013';
 export const unionCountyFips = '039';
 
-export const totalPopulationFips = 'B02001_001E';
-export const nonWhiteFips = [
+
+// Census Variables
+export const totalPopulation = 'B02001_001E';
+export const black = 'B02009_001E';
+export const hispanicOrLatino = 'B03001_002E';
+export const nonWhite = [
   'B02001_003E',  // Black or African American alone
   'B02001_004E',  // American Indian and Alaska Native alone
   'B02001_005E',  // Asian alone
@@ -37,7 +41,15 @@ export const nonWhiteFips = [
   'B02001_008E',  // Two or more races
 ];
 
-export const medianHouseholdIncomeFips = 'B19013_001E';
+export const educationTotal = 'B06009_001E';
+export const lessThanHighSchool = 'B06009_002E';
+export const highSchool = 'B06009_003E';
+export const someCollege = 'B06009_004E';
+export const bachelors = 'B06009_005E';
+export const graduate = 'B06009_006E';
 
-export const capaNull = -9999;
-export const censusNull = -666666666;
+export const medianHouseholdIncome = 'B19013_001E';
+
+
+export const capaTraverseNull = -9999;
+export const censusIncomeNull = -666666666;
