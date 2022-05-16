@@ -7,7 +7,7 @@ import { findMaxHeatIndexes, mergeHeatIndexData } from './heat-index';
 import addDemographics from './add-demographics';
 import filterRedline from './filter-redline';
 import * as constants from './constants';
-import { filterNyc } from './greenspace';
+import { filterNyc, getElizabethParks } from './greenspace';
 import { FeatureCollection } from '@turf/turf';
 
 
@@ -98,15 +98,16 @@ async function main(): Promise<void> {
   }
 
   fs.writeFileSync(`${constants.baseExportPath}/overlappedRedline.geojson`, JSON.stringify(overlappedRedline));
-
+  
 
   const nycGreenspace = filterNyc(maxHeatAndDemographics, geoJsonFromFile(`${constants.baseExportPath}/greenspace/nyc.geojson`));
   const jerseyCityGreenspace = geoJsonFromFile(`${constants.baseExportPath}/greenspace/jersey-city.geojson`);
   const newarkGreenspace = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/greenspace/newark/Newark_Parks.shp`);
+  const elizabethGreenspace = await getElizabethParks();
 
   const overlappedGreenspace: FeatureCollection = {
     type: 'FeatureCollection',
-    features: nycGreenspace.concat(jerseyCityGreenspace.features).concat(newarkGreenspace.features)
+    features: nycGreenspace.concat(jerseyCityGreenspace.features).concat(newarkGreenspace.features).concat(elizabethGreenspace)
   }
 
   fs.writeFileSync(`${constants.baseExportPath}/overlappedGreenspace.geojson`, JSON.stringify(overlappedGreenspace));
