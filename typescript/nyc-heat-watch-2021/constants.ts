@@ -18,6 +18,11 @@ export const nycGreenspaceUrl = 'https://data.cityofnewyork.us/api/geospatial/mw
 export const jerseyCityGreenspaceUrl = 'https://data.jerseycitynj.gov/explore/dataset/jersey-city-parks-map/download/?format=geojson&timezone=America/New_York&lang=en';
 export const newarkGreenspaceUrl = 'https://data.ci.newark.nj.us/dataset/540221e5-1716-4115-a058-892943190611/resource/d9f28e90-7935-4f84-97a5-51549fa6af44/download/newarkparks.shp.zip';
 
+
+export const njtransitBusRoutesUrl = 'https://opendata.arcgis.com/api/v3/datasets/96fc4941f51e46dab452ac8509edb0cc_0/downloads/data?format=geojson&spatialRefId=4326';
+export const njTransitOneBusRouteId = '3be30ef2-4111-48f7-9456-09254c608859';
+
+
 export const nyStateFips = '36';
 export const nyCountyFips = '061';
 export const bronxCountyFips = '005';

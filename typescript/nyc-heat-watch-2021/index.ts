@@ -9,12 +9,13 @@ import filterRedline from './filter-redline';
 import * as constants from './constants';
 import { filterNyc, getElizabethParks } from './greenspace';
 import { FeatureCollection } from '@turf/turf';
+import filterBusRoute from './transit';
 
 
 
 async function main(): Promise<void> {
   await Promise.all([
-    downloadAndExtract(constants.nycRasterZipUrl, `${constants.baseExportPath}/rasters/nyc`),
+    /*downloadAndExtract(constants.nycRasterZipUrl, `${constants.baseExportPath}/rasters/nyc`),
     downloadAndExtract(constants.nycTraverseZipUrl, `${constants.baseExportPath}/traverses/nyc`),
     downloadAndExtract(constants.nyCensusTractZipUrl, `${constants.baseExportPath}/census-tracts/ny`),
     downloadFile(constants.manhattanRedlineUrl, `${constants.baseExportPath}/redline/manhattan.geojson`),
@@ -28,10 +29,12 @@ async function main(): Promise<void> {
     downloadFile(constants.essexCountyRedlineUrl, `${constants.baseExportPath}/redline/essex-county.geojson`),
     downloadFile(constants.unionCountyRedlineUrl, `${constants.baseExportPath}/redline/union-county.geojson`),
     downloadFile(constants.jerseyCityGreenspaceUrl, `${constants.baseExportPath}/greenspace/jersey-city.geojson`),
-    downloadAndExtract(constants.newarkGreenspaceUrl, `${constants.baseExportPath}/greenspace/newark`),
+    downloadAndExtract(constants.newarkGreenspaceUrl, `${constants.baseExportPath}/greenspace/newark`),*/
+
+    downloadFile(constants.njtransitBusRoutesUrl, `${constants.baseExportPath}/transit/njtransit-bus-routes.geojson`),
   ]);
 
-  const nycCensusTracts = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/census-tracts/ny/cb_2018_36_tract_500k.shp`);
+  /*const nycCensusTracts = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/census-tracts/ny/cb_2018_36_tract_500k.shp`);
 
   const nycMorningTraversePointFeatures = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/traverses/nyc/am_trav (2021_12_08 04_38_32 UTC).shp`);
   const nycAfternoonTraversePointFeatures = await parseGeoJsonFromShapeFile(`${constants.baseExportPath}/traverses/nyc/af_trav.shp`);
@@ -110,7 +113,11 @@ async function main(): Promise<void> {
     features: nycGreenspace.concat(jerseyCityGreenspace.features).concat(newarkGreenspace.features).concat(elizabethGreenspace)
   }
 
-  fs.writeFileSync(`${constants.baseExportPath}/overlappedGreenspace.geojson`, JSON.stringify(overlappedGreenspace));
+  fs.writeFileSync(`${constants.baseExportPath}/overlappedGreenspace.geojson`, JSON.stringify(overlappedGreenspace));*/
+
+  const njtransitBusRoutes = geoJsonFromFile(`${constants.baseExportPath}/transit/njtransit-bus-routes.geojson`);
+  const njtransitOneBusRoute = filterBusRoute(njtransitBusRoutes, constants.njTransitOneBusRouteId);
+  fs.writeFileSync(`${constants.baseExportPath}/njtransit-one-bus.geojson`, JSON.stringify(njtransitOneBusRoute));
 }
 
 
