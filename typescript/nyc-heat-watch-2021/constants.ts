@@ -20,7 +20,7 @@ export const newarkGreenspaceUrl = 'https://data.ci.newark.nj.us/dataset/540221e
 
 
 export const njtransitBusRoutesUrl = 'https://opendata.arcgis.com/api/v3/datasets/96fc4941f51e46dab452ac8509edb0cc_0/downloads/data?format=geojson&spatialRefId=4326';
-export const njTransitOneBusRouteId = '3be30ef2-4111-48f7-9456-09254c608859';
+export const njTransitOneBusLine = 1;
 
 
 export const nyStateFips = '36';

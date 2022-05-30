@@ -1,14 +1,16 @@
-import { FeatureCollection } from "@turf/turf";
+import { Feature, FeatureCollection } from "@turf/turf";
 
-export default function filterBusRoute(busRoutes: FeatureCollection, busGlobalId: string): FeatureCollection {
+export default function filterBusLine(busRoutes: FeatureCollection, busLine: number): FeatureCollection {
+  const filteredFeatures: Array<Feature> = [];
+
   for (const feature of busRoutes.features) {
-    if (feature.properties!['GlobalID'] === busGlobalId) {
-      return {
-        type: 'FeatureCollection',
-        features: [feature]
-      }
+    if (feature.properties!['LINE'] === busLine) {
+      filteredFeatures.push(feature)
     }
   }
 
-  throw new Error(`Could not find bus route "${busGlobalId}"`);
+  return {
+    type: 'FeatureCollection',
+    features: filteredFeatures
+  }
 }
