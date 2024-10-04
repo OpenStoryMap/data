@@ -85,7 +85,7 @@ async function main(): Promise<void> {
 
   fs.writeFileSync(`${constants.baseExportPath}/heatAndDemographics.geojson`, JSON.stringify(maxHeatAndDemographics));
 
-  //const maxHeatAndDemographics = JSON.parse(fs.readFileSync(`${constants.baseExportPath}/heatAndDemographics.geojson`).toString());
+  const maxHeatAndDemographics = JSON.parse(fs.readFileSync(`${constants.baseExportPath}/heatAndDemographics.geojson`).toString());
 
 
   const manhattanRedline = filterRedline(maxHeatAndDemographics, geoJsonFromFile(`${constants.baseExportPath}/redline/manhattan.geojson`));
